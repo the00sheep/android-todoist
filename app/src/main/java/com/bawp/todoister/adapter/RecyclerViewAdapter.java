@@ -83,7 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             if (id == R.id.todo_row_layout) {
 
-                onTodoClickListener.onTodoClick(getAdapterPosition(), currTask);
+                onTodoClickListener.onTodoClick(currTask);
             }
             //mark for deletion
             else if(id == R.id.todo_radio_button){

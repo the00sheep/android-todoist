@@ -12,14 +12,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bawp.todoister.model.Priority;
+import com.bawp.todoister.model.SharedViewModel;
 import com.bawp.todoister.model.Task;
 import com.bawp.todoister.model.TaskViewModel;
+import com.bawp.todoister.util.Utils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import java.util.Calendar;
@@ -37,6 +40,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     private Group calendarGroup;
     private Date dueDate;
     Calendar calendar = Calendar.getInstance();
+    private SharedViewModel sharedViewModel;
 
     public BottomSheetFragment(){
 
@@ -72,12 +76,15 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedViewModel = new ViewModelProvider(requireActivity())
+                .get(SharedViewModel.class);
 
         calendarButton.setOnClickListener(view12 -> {
             calendarGroup.setVisibility(
                     //toggle calender group
                     calendarGroup.getVisibility() == View.GONE ? View.VISIBLE : View.GONE
             );
+            Utils.hideSoftKeyboard(view12);
         });
         calendarView.setOnDateChangeListener((calendarView, year, month, dayOfMonth) -> {
 

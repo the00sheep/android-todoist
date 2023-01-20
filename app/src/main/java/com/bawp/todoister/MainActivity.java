@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.bawp.todoister.adapter.OnTodoClickListener;
 import com.bawp.todoister.adapter.RecyclerViewAdapter;
 import com.bawp.todoister.model.Priority;
+import com.bawp.todoister.model.SharedViewModel;
 import com.bawp.todoister.model.Task;
 import com.bawp.todoister.model.TaskViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements OnTodoClickListen
     private int counter;
 
     BottomSheetFragment bottomSheetFragment;
+    private SharedViewModel sharedViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements OnTodoClickListen
         taskViewModel = new ViewModelProvider.AndroidViewModelFactory(
                 MainActivity.this.getApplication())
                 .create(TaskViewModel.class);
+
+        sharedViewModel = new ViewModelProvider(this)
+                .get(SharedViewModel.class);
 
 
         //create a list of tasks
@@ -124,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements OnTodoClickListen
     }
 
     @Override
-    public void onTodoClick(int adapterPosition, Task task) {
-        Log.d("Click", "onTodoClick: " +adapterPosition );
+    public void onTodoClick(Task task) {
+        sharedViewModel.selectItem(task);
     }
 
     @Override
