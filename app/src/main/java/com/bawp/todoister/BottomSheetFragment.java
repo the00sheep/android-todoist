@@ -25,7 +25,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import java.util.Calendar;
 import java.util.Date;
 
-public class BottomSheetFragment extends BottomSheetDialogFragment {
+public class BottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
     private EditText enterToDo;
     private ImageButton calendarButton;
     private ImageButton priorityButton;
@@ -61,8 +61,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         priorityRadioGroup = view.findViewById(R.id.radioGroup_priority);
 
         Chip todayChip = view.findViewById(R.id.today_chip);
+        todayChip.setOnClickListener(this);
         Chip tomorrowChip = view.findViewById(R.id.tomorrow_chip);
+        tomorrowChip.setOnClickListener(this);
         Chip nextWeekChip = view.findViewById(R.id.next_week_chip);
+        nextWeekChip.setOnClickListener(this);
 
         return view;
     }
@@ -98,5 +101,25 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.today_chip) {
+            //set date for today
+            calendar.add(Calendar.DAY_OF_YEAR, 0);
+            dueDate = calendar.getTime();
+        }
+        else if(id == R.id.tomorrow_chip){
+            //set date for tomorrow
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            dueDate = calendar.getTime();
+        }
+        else if(id == R.id.next_week_chip){
+            //set date for over a week
+            calendar.add(Calendar.DAY_OF_YEAR, 7);
+            dueDate = calendar.getTime();
+        }
     }
 }
