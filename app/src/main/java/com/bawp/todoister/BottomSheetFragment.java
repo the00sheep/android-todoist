@@ -2,6 +2,7 @@ package com.bawp.todoister;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,8 +77,14 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         sharedViewModel = new ViewModelProvider(requireActivity())
                 .get(SharedViewModel.class);
+
+        if (sharedViewModel.getSelectedItem().getValue() != null){
+            Task task = sharedViewModel.getSelectedItem().getValue();
+            Log.d("ANDREAS", "onViewCreated: " + task.getTask());
+        }
 
         calendarButton.setOnClickListener(view12 -> {
             calendarGroup.setVisibility(
