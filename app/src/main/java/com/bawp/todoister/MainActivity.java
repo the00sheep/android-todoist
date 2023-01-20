@@ -28,7 +28,7 @@ import android.view.MenuItem;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnTodoClickListener {
+public class MainActivity extends AppCompatActivity implements OnTodoClickListener{
     private static final String TAG =  "item";
     private TaskViewModel taskViewModel;
     private RecyclerView recyclerView;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnTodoClickListen
             }*/
 
             //pass the tasks to recycler view adapter
-            recyclerViewAdapter = new RecyclerViewAdapter(tasks, this::onTodoClick);
+            recyclerViewAdapter = new RecyclerViewAdapter(tasks, this);
             recyclerView.setAdapter(recyclerViewAdapter);
 
 
@@ -126,5 +126,12 @@ public class MainActivity extends AppCompatActivity implements OnTodoClickListen
     @Override
     public void onTodoClick(int adapterPosition, Task task) {
         Log.d("Click", "onTodoClick: " +adapterPosition );
+    }
+
+    @Override
+    public void onTodoRadioButtonClick(Task task) {
+        Log.d("Click Delete", "onTodoClick: " +task.getTask() );
+        TaskViewModel.delete(task);
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 }

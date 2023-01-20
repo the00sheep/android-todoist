@@ -71,20 +71,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             //it is connected to our own click listener
             itemView.setOnClickListener(this);
-
+            radioButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
+            //get current task based on adapter position
+            Task currTask = taskList.get(getAdapterPosition());
 
             int id = view.getId();
 
             if (id == R.id.todo_row_layout) {
-                //get current task based on adapter position
-                Task currTask = taskList.get(getAdapterPosition());
 
-                //pass adapter pos and task
                 onTodoClickListener.onTodoClick(getAdapterPosition(), currTask);
+            }
+            //mark for deletion
+            else if(id == R.id.todo_radio_button){
+
+                onTodoClickListener.onTodoRadioButtonClick(currTask);
             }
 
         }
