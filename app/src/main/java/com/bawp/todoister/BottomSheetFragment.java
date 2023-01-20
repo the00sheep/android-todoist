@@ -42,6 +42,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     private Date dueDate;
     Calendar calendar = Calendar.getInstance();
     private SharedViewModel sharedViewModel;
+    private boolean isEdit;
 
     public BottomSheetFragment(){
 
@@ -73,6 +74,18 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         nextWeekChip.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (sharedViewModel.getSelectedItem().getValue() != null) {
+            isEdit = sharedViewModel.getIsEdit();
+            Task task = sharedViewModel.getSelectedItem().getValue();
+            enterToDo.setText(task.getTask());
+            Log.d("MY", "onViewCreated: " + isEdit + " " + task.getTask());
+        }
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -110,8 +123,19 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             //create task obj
             if(!TextUtils.isEmpty(task) && (dueDate != null)){
                 Task myTask = new Task(task, Priority.MEDIUM, dueDate, Calendar.getInstance().getTime(),false);
+                if(isEdit){
+                    Task updateTask = sharedViewModel.getSelectedItem().getValue();
+                    updateTask.setTask(task);
+                    updateTask.setDateCreated(Calendar.getInstance().getTime());
+                    updateTask.setPriority(Priority.HIGH);
+                    updateTask.setDueDate(dueDate);
+                    TaskViewModel.update(updateTask);
+                    sharedViewModel.setIsEdit(false);
+                }
+                else {
 
-                TaskViewModel.insert(myTask);
+                    TaskViewModel.insert(myTask);
+                }
             }
         });
 
