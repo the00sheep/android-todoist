@@ -2,6 +2,7 @@ package com.bawp.todoister;
 
 import android.os.Bundle;
 
+import com.bawp.todoister.adapter.RecyclerViewAdapter;
 import com.bawp.todoister.model.Priority;
 import com.bawp.todoister.model.Task;
 import com.bawp.todoister.model.TaskViewModel;
@@ -10,17 +11,27 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG =  "item";
     private TaskViewModel taskViewModel;
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private int counter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +42,30 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        counter = 0;
+
+        //recycler view setup
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         taskViewModel = new ViewModelProvider.AndroidViewModelFactory(
                 MainActivity.this.getApplication())
                 .create(TaskViewModel.class);
 
+
+        //create a list of tasks
+        taskViewModel.getAllTasks().observe(this, tasks -> {
+            /* for (Task task : tasks){
+                Log.d(TAG, "onCreate: " + task.getTaskId());
+            }*/
+
+            //pass the tasks to recycler view adapter
+            recyclerViewAdapter = new RecyclerViewAdapter(tasks);
+            recyclerView.setAdapter(recyclerViewAdapter);
+
+
+        });
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -45,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
-                Task task = new Task("Todo", Priority.HIGH, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), false );
+                Task task = new Task("Task" + counter++, Priority.MEDIUM, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), false );
 
                 TaskViewModel.insert(task);
             }
