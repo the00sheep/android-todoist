@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.bawp.todoister.model.Priority;
 import com.bawp.todoister.model.SharedViewModel;
@@ -19,6 +20,8 @@ import com.bawp.todoister.model.TaskViewModel;
 import com.bawp.todoister.util.Utils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
@@ -136,6 +139,13 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
                     TaskViewModel.insert(myTask);
                 }
+                enterToDo.setText("");
+                if(this.isVisible()){
+                    this.dismiss();
+                }
+            }
+            else{
+                Toast.makeText(getActivity(),R.string.empty_field,Toast.LENGTH_SHORT).show();
             }
         });
 
