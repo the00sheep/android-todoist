@@ -4,18 +4,15 @@ import android.os.Bundle;
 
 import com.bawp.todoister.adapter.OnTodoClickListener;
 import com.bawp.todoister.adapter.RecyclerViewAdapter;
-import com.bawp.todoister.model.Priority;
 import com.bawp.todoister.model.SharedViewModel;
 import com.bawp.todoister.model.Task;
 import com.bawp.todoister.model.TaskViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,9 +22,7 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.Calendar;
-import java.util.List;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements OnTodoClickListener{
     private static final String TAG =  "item";
@@ -42,11 +37,13 @@ public class MainActivity extends AppCompatActivity implements OnTodoClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         //toolbar widget
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         counter = 0;
 
@@ -121,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements OnTodoClickListen
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.about_btn) {
             return true;
         }
 
